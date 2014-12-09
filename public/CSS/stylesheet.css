@@ -13,7 +13,8 @@ font-family: Verdana, sans-serif;
 }
 
 h1 {
-    font-family: Trebuchet MS, Helvetica, sans-serif;
+    font-family: Trajan Sans Pro, Trebuchet MS, Helvetica, sans-serif;
+    font-size: 300%;
 	color:#fff;
 	text-decoration: underline;
 }
@@ -29,6 +30,8 @@ ol {
 	list-style-type: decimal;
 	list-style-position: inside;
 	color:#fff;
+	font-family: 'Special Elite', cursive;
+	font-size: 150%;
 
 }
 	
@@ -38,5 +41,13 @@ p {
 
 }
 
+#container {
+	width: 400px;
+	height: 200px;
+	padding: 20px;
+	margin: 50px;
+	background-color: #87735D;
+	border: 3px solid black;
+}
 
 
