@@ -85,7 +85,7 @@
 
 	<ul>
 		<? foreach($todo_array as $key => $value): ?>
-			<li><?=$value?> | <a href="/todo_list.php?remove=<?=$key?>">X</a> </li>
+			<li><?= $value ?> | <a href="/todo_list.php?remove=<?= $key ?>">X</a></li>
 		<? endforeach; ?>
 	</ul>
 
