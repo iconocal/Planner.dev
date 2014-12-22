@@ -1,6 +1,6 @@
 <?php
 
-		$todo_array = openfile('data/todo.txt');
+	$todo_array = openfile('data/todo.txt');
 
 	// Verify there were uploaded files and no errors
 	if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
@@ -85,7 +85,7 @@
 
 	<ul>
 		<? foreach($todo_array as $key => $value): ?>
-			<li><?= $value ?> | <a href="/todo_list.php?remove=<?= $key ?>">X</a></li>
+			<li><?= htmlspecialchars(strip_tags($value)); ?> | <a href="/todo_list.php?remove=<?= $key ?>">X</a></li>
 		<? endforeach; ?>
 	</ul>
 
