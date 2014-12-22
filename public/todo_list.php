@@ -10,6 +10,7 @@
 	    // Grab the filename from the uploaded file by using basename
 	    $filename = basename($_FILES['file1']['name']);
 
+
 	    // Create the saved filename using the file's original name and our upload directory
 	    $savedFilename = $uploadDir . $filename;
 
@@ -83,11 +84,9 @@
     
 
 	<ul>
-		<?php
-			foreach($todo_array as $key => $value) {
-				echo "<li>{$value} | <a href=\"/todo_list.php?remove={$key}\">X</a> </li>";
-			}
-		?>
+		<? foreach($todo_array as $key => $value): ?>
+			<li><?=$value?> | <a href="/todo_list.php?remove=<?=$key?>">X</a> </li>
+		<? endforeach; ?>
 	</ul>
 
 
