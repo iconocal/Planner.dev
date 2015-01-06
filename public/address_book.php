@@ -1,45 +1,55 @@
 <?php
 
+$filename = 'address_book.csv';
 	
-	$addressBook = [
-	    ['The White House', '1600 Pennsylvania Avenue NW', 'Washington', 'DC', '20500'],
-	    ['Marvel Comics', 'P.O. Box 1527', 'Long Island City', 'NY', '11101'],
-	    ['LucasArts', 'P.O. Box 29901', 'San Francisco', 'CA', '94129-0901']
-	];
-	
-	// Write $addressBook array to address_book.csv
-	// $handle = fopen('address_book.csv', 'w');
-	// foreach ($addressBook as $row) {
- //    	fputcsv($handle, $row);
-	// }
-	// fclose($handle);
 
+function read_file($filename) {
 
-	// Check for $_POST request
+	$handle = fopen($filename, 'r');
 
-	if (!empty($_POST)) {
+	$addressBook = [];
 
-		foreach ($_POST as $key => $value) {
-			
-			$error = false;
+	while (!feof($handle)) {
+		$row = fgetcsv($handle);
 
-			if (empty($value)) {
-				$error = true;
-			} 
-		}		
-
-			if ($error) {
-					$message = "Please fill out all fields.";
-				} else {
-					$addressBook[] = $_POST;
-					}	
-			
+		if (!empty($row)) {
+			$addressBook[] = $row;
 		}
-
-		
-
+	}
 	
+	fclose($handle);
+	return $addressBook;
+}
 
+function save_file($filename, $array) {
+	$handle = fopen($filename, 'w');
+	foreach ($array as $row) {
+		fputcsv($handle, $row);
+	}
+
+	fclose($handle);
+}
+
+$addressBook = read_file($filename);
+
+// function check_post($_POST) {
+// 	if (!empty($_POST)) {
+// 		foreach ($_POST as $key => $value) {
+		
+// 			$error = false;
+
+// 			if (empty($value)) {
+// 				return $error = true;
+// 			}
+// 		}
+// 	}
+// }
+
+
+	if($_POST) {
+		$addressBook[] = $_POST;
+		save_file($filename, $addressBook);
+	}
 
 	
 
@@ -62,7 +72,7 @@
 
 	<h1>Address Book</h1>
 
-
+<!-- ADDRESS BOOK TABLE -->
 	<table class="table">
 		<tr>
 			<th>Location</th>
@@ -71,6 +81,7 @@
 			<th>State</th>
 			<th>Zip Code</th>
 		</tr>
+
 <!-- 		Start working with PHP to echo out the data from $addressBook -->
 	<?php
 
@@ -120,19 +131,7 @@
 	    <button type="submit" class="btn btn-default">Submit</button>
 	</form>
 
-	<!-- <h2>Upload TO DO List</h2>
-
-
-
-	<form method="POST" enctype="multipart/form-data">
-        <p>
-            <label for="file1">File to upload: </label>
-            <input type="file" id="file1" name="file1">
-        </p>
-        <p>
-            <input type="submit" value="Upload">
-        </p>
-    </form> -->
+	
 
 </div> <!-- Container -->
 	
