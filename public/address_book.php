@@ -90,11 +90,14 @@ $addressBook = read_file($filename);
 			foreach ($address as $value) {
 				echo "<td>{$value}</td>";
 			}
-		}
+		echo '<td><a href="/address_book.php?remove=<? {$address} ?>">X</a></td>';		
+	}
 
 	?>
 	</table>
 
+
+<!-- <a href="/todo_list.php?remove=<?= $key ?>">X</a> -->
 
 <br>
 <br>
