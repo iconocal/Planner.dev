@@ -1,54 +1,55 @@
 <?php
 
 $filename = 'address_book.csv';
-	
 
-function read_file($filename) {
+class AddressDataStore
+ {
+    public $csvFile = '';
 
-	$handle = fopen($filename, 'r');
+    function readAddressBook()
+    {
+	    $handle = fopen($this->csvFile, 'r');
 
-	$addressBook = [];
+		$addressBook = [];
 
-	while (!feof($handle)) {
-		$row = fgetcsv($handle);
+		while (!feof($handle)) {
+			$row = fgetcsv($handle);
 
-		if (!empty($row)) {
-			$addressBook[] = $row;
+			if (!empty($row)) {
+				$addressBook[] = $row;
+			}
 		}
-	}
 	
-	fclose($handle);
-	return $addressBook;
-}
+		fclose($handle);
+		return $addressBook;
+    }
 
-function save_file($filename, $array) {
-	$handle = fopen($filename, 'w');
-	foreach ($array as $row) {
-		fputcsv($handle, $row);
-	}
+    function writeAddressBook($array)
+    {
+    	$handle = fopen($this->csvFile, 'w');
 
-	fclose($handle);
-}
+		foreach ($array as $row) {
+			fputcsv($handle, $row);
+		}
 
-$addressBook = read_file($filename);
+		fclose($handle);
+    }
 
-// function check_post($_POST) {
-// 	if (!empty($_POST)) {
-// 		foreach ($_POST as $key => $value) {
-		
-// 			$error = false;
+ }
 
-// 			if (empty($value)) {
-// 				return $error = true;
-// 			}
-// 		}
-// 	}
-// }
+ 	// Create instance = $addressList
+ 	// pass $filename to $addressList->csvFile
 
+ 	$addressList = new AddressDataStore();
+ 	$addressList->csvFile = $filename;
+ 	$addressBook = $addressList->readAddressBook();
+
+	
 
 	if($_POST) {
 		$addressBook[] = $_POST;
-		save_file($filename, $addressBook);
+		// save_file($filename, $addressBook);
+		$addressList->writeAddressBook($addressBook);
 	}
 
 	
@@ -85,19 +86,20 @@ $addressBook = read_file($filename);
 <!-- 		Start working with PHP to echo out the data from $addressBook -->
 	<?php
 
-	foreach ($addressBook as $address) {
+	foreach ($addressBook as $key => $address) {
 		echo "<tr>";
 			foreach ($address as $value) {
 				echo "<td>{$value}</td>";
 			}
-		echo '<td><a href="/address_book.php?remove=<? {$address} ?>">X</a></td>';		
+
+		echo "<td><a href=\"address_book.php?remove= $key \">X</td>";		
 	}
 
 	?>
 	</table>
 
 
-<!-- <a href="/todo_list.php?remove=<?= $key ?>">X</a> -->
+
 
 <br>
 <br>
@@ -139,6 +141,46 @@ $addressBook = read_file($filename);
 </div> <!-- Container -->
 	
 
+// function read_file($filename) {
 
+// 	$handle = fopen($filename, 'r');
+
+// 	$addressBook = [];
+
+// 	while (!feof($handle)) {
+// 		$row = fgetcsv($handle);
+
+// 		if (!empty($row)) {
+// 			$addressBook[] = $row;
+// 		}
+// 	}
+	
+// 	fclose($handle);
+// 	return $addressBook;
+// }
+
+// function save_file($filename, $array) {
+// 	$handle = fopen($filename, 'w');
+// 	foreach ($array as $row) {
+// 		fputcsv($handle, $row);
+// 	}
+
+// 	fclose($handle);
+// }
+
+
+// function check_post($_POST) {
+// 	if (!empty($_POST)) {
+// 		foreach ($_POST as $key => $value) {
+		
+// 			$error = false;
+
+// 			if (empty($value)) {
+// 				return $error = true;
+// 			}
+// 		}
+// 	}
+// }
 </body>
 </html>
+
