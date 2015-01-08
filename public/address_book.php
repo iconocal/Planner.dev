@@ -6,6 +6,11 @@ class AddressDataStore
  {
     public $csvFile = '';
 
+    function __construct($input = '')
+    {
+    	$this->csvFile = $input;
+    }
+
     function readAddressBook()
     {
 	    $handle = fopen($this->csvFile, 'r');
@@ -52,6 +57,13 @@ class AddressDataStore
 		$addressList->writeAddressBook($addressBook);
 	}
 
+	if(isset($_GET['remove'])) {
+		$remove = $_GET['remove'];
+		unset($addressBook[$remove]);
+		$addressBook = array_values($addressBook);
+		$addressList->writeAddressBook($addressBook);
+	}
+
 	
 
 ?>
@@ -92,7 +104,7 @@ class AddressDataStore
 				echo "<td>{$value}</td>";
 			}
 
-		echo "<td><a href=\"address_book.php?remove= $key \">X</td>";		
+		echo "<td><a href=\"address_book.php?remove=$key\">X</td>";		
 	}
 
 	?>
@@ -141,46 +153,7 @@ class AddressDataStore
 </div> <!-- Container -->
 	
 
-// function read_file($filename) {
 
-// 	$handle = fopen($filename, 'r');
-
-// 	$addressBook = [];
-
-// 	while (!feof($handle)) {
-// 		$row = fgetcsv($handle);
-
-// 		if (!empty($row)) {
-// 			$addressBook[] = $row;
-// 		}
-// 	}
-	
-// 	fclose($handle);
-// 	return $addressBook;
-// }
-
-// function save_file($filename, $array) {
-// 	$handle = fopen($filename, 'w');
-// 	foreach ($array as $row) {
-// 		fputcsv($handle, $row);
-// 	}
-
-// 	fclose($handle);
-// }
-
-
-// function check_post($_POST) {
-// 	if (!empty($_POST)) {
-// 		foreach ($_POST as $key => $value) {
-		
-// 			$error = false;
-
-// 			if (empty($value)) {
-// 				return $error = true;
-// 			}
-// 		}
-// 	}
-// }
 </body>
 </html>
 
