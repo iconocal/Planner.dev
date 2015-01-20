@@ -37,35 +37,34 @@ class Filestore
     
     // Reads contents of csv $this->filename, returns an array
      
-    // public function readCSV()
-    // {
-    //     $handle = fopen($this->csvFile, 'r');
+    public function readCSV()
+    {
+        $handle = fopen($this->csvFile, 'r');
+        $addressBook = [];
 
-    //     $addressBook = [];
+        while (!feof($handle)) {
+            $row = fgetcsv($handle);
 
-    //     while (!feof($handle)) {
-    //         $row = fgetcsv($handle);
-
-    //         if (!empty($row)) {
-    //             $addressBook[] = $row;
-    //         }
-    //     }
+            if (!empty($row)) {
+                $addressBook[] = $row;
+            }
+        }
     
-    //     fclose($handle);
-    //     return $addressBook;
-    // }
+        fclose($handle);
+        return $addressBook;
+    }
 
     
     // // Writes contents of $array to csv $this->filename
      
-    // public function writeCSV($array)
-    // {
-    //     $handle = fopen($this->csvFile, 'w');
+    public function writeCSV($array)
+    {
+        $handle = fopen($this->csvFile, 'w');
 
-    //     foreach ($array as $row) {
-    //         fputcsv($handle, $row);
-    //     }
+        foreach ($array as $row) {
+            fputcsv($handle, $row);
+        }
 
-    //     fclose($handle);
-    // }
+        fclose($handle);
+    }
 }
