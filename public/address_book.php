@@ -2,71 +2,41 @@
 
 // $filename = 'address_book.csv';
 
-class FileManagement
-{
-	// This class will manage one file at a time.
-	public $filename = '';
-
-	function __construct ($filename = '') {
-		$this->filename = $filename;
-	}
-
-	public function __uploadFile()
-	{
-		// Set the destination
-	}
-}
 
 class AddressDataStore
  {
-    public $csvFile = '';
-    // public $contacts = [];
+    
+    // function __construct($input = 'address_book.csv')
+    
 
+  //   function readAddressBook()
+  //   {
+	 //    $handle = fopen($this->csvFile, 'r');
 
+		// $addressBook = [];
 
-    function __construct($input = 'address_book.csv')
-    {
-    	$this->csvFile = $input; // sees input
-    	// $this->contacts = $this->readAddressBook(); // sets array & calls write method with default or passed .csv
-    }
+		// while (!feof($handle)) {
+		// 	$row = fgetcsv($handle);
 
-    function readAddressBook()
-    {
-	    $handle = fopen($this->csvFile, 'r');
-
-		$addressBook = [];
-
-		while (!feof($handle)) {
-			$row = fgetcsv($handle);
-
-			if (!empty($row)) {
-				$addressBook[] = $row;
-			}
-		}
+		// 	if (!empty($row)) {
+		// 		$addressBook[] = $row;
+		// 	}
+		// }
 	
-		fclose($handle);
-		return $addressBook;
-    }
+		// fclose($handle);
+		// return $addressBook;
+  //   }
 
-    function writeAddressBook($array)
-    {
-    	$handle = fopen($this->csvFile, 'w');
+  //   function writeAddressBook($array)
+  //   {
+  //   	$handle = fopen($this->csvFile, 'w');
 
-		foreach ($array as $row) {
-			fputcsv($handle, $row);
-		}
+		// foreach ($array as $row) {
+		// 	fputcsv($handle, $row);
+		// }
 
-		fclose($handle);
-    }
-
-    function mergeBooks()
-    {
-    	
-
-	    echo "File Uploaded";
-	    // $todo_array = array_merge($todo_array, $upload_array);
-	    // writeFile('data/todo.txt', $todo_array);
-    }
+		// fclose($handle);
+  //   }
 
  }
 
@@ -98,10 +68,7 @@ class AddressDataStore
 	    }
 
 
-	    // Move the file from the temp location to our uploads directory
-
-
-		// $addressBook = $addressList->mergeBooks();	    
+	   
 
 	}
 
