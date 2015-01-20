@@ -1,6 +1,10 @@
 <?php
+	
+	require_once '../inc/filestore.php';
 
-	$todo_array = openfile('data/todo.txt');
+	$file = new Filestore('data/todo.txt'); 
+
+	$todo_array = $file->readLines();
 
 	// Verify there were uploaded files and no errors
 	if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
@@ -17,45 +21,24 @@
 	    // Move the file from the temp location to our uploads directory
 	    move_uploaded_file($_FILES['file1']['tmp_name'], $savedFilename);
 
-	    $upload_array = openfile($savedFilename);
+	    $upload_array = $file->readLines($savedFilename);
 
 
 	    $todo_array = array_merge($todo_array, $upload_array);
-	    writeFile('data/todo.txt', $todo_array);
+	    $file->writeLines($todo_array);
 
 	}
-
-
-
-	function writeFile($filename, $arrayList) {
-		$handle = fopen($filename, 'w');
-		foreach ($arrayList as $listItem) {
-			fwrite($handle, $listItem . PHP_EOL);
-			}
-		fclose($handle);
-	}
-
-	function openfile($filename) {
-		$handle = fopen($filename, 'r');
-		$contents = trim(fread($handle, filesize($filename)));
-		$todo_array = explode("\n", $contents);
-		fclose($handle);
-		return $todo_array;
-	}
-
-
-
 
 
 	if(isset($_POST['todo'])) {
 		$todo_array[] = $_POST['todo'];
-		writeFile('data/todo.txt', $todo_array);	
+		$file->writeLines($todo_array);	
 	}
 
 	if(isset($_GET['remove'])) {
 		$id = $_GET['remove'];
 		unset($todo_array[$id]);
-		writeFile('data/todo.txt', $todo_array);
+		$file->writeLines($todo_array);
 	}
 
 	
@@ -68,7 +51,7 @@
 
 <html>
 <head>
-	<title>Least Fun TO DO List Ever</title>
+	<title>Least Fun Todo List Ever</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
 </head>
@@ -77,7 +60,7 @@
 
 <div class="container">
 
-	<h1>Least Fun TO DO List Ever</h1>
+	<h1>Least Fun Todo List Ever</h1>
 
 	
 
@@ -92,18 +75,16 @@
 
 
 	<form method="POST" action="/todo_list.php">
-		<h3>Add a task to the TO DO List:</h3>
+		<h2>Add a task:</h3>
 		<p>
-	        <label for="todo">New Item: </label>
+	        <label for="todo"></label>
 	        <input id="todo" name="todo" type="text" placeholder="Add your task">
 	    </p>
-	   
-		<br>
 
 	    <button type="submit">Add Task</button>
 	</form>
 
-	<h2>Upload TO DO List</h2>
+	<h2>Upload Todo List</h2>
 
 
 

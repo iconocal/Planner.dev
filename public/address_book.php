@@ -1,14 +1,33 @@
 <?php
 
-$filename = 'address_book.csv';
+// $filename = 'address_book.csv';
+
+class FileManagement
+{
+	// This class will manage one file at a time.
+	public $filename = '';
+
+	function __construct ($filename = '') {
+		$this->filename = $filename;
+	}
+
+	public function __uploadFile()
+	{
+		// Set the destination
+	}
+}
 
 class AddressDataStore
  {
     public $csvFile = '';
+    // public $contacts = [];
 
-    function __construct($input = '')
+
+
+    function __construct($input = 'address_book.csv')
     {
-    	$this->csvFile = $input;
+    	$this->csvFile = $input; // sees input
+    	// $this->contacts = $this->readAddressBook(); // sets array & calls write method with default or passed .csv
     }
 
     function readAddressBook()
@@ -40,16 +59,54 @@ class AddressDataStore
 		fclose($handle);
     }
 
+    function mergeBooks()
+    {
+    	
+
+	    echo "File Uploaded";
+	    // $todo_array = array_merge($todo_array, $upload_array);
+	    // writeFile('data/todo.txt', $todo_array);
+    }
+
  }
 
- 	// Create instance = $addressList
- 	// pass $filename to $addressList->csvFile
 
+ 	// new instance of AddressDataStore
  	$addressList = new AddressDataStore();
- 	$addressList->csvFile = $filename;
- 	$addressBook = $addressList->readAddressBook();
+ 	$addressBook = $addressList->readAddressBook(); // don't need this using Thomas' solution
 
-	
+
+	// Verify there were uploaded files and no errors
+	if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
+		// Set the destination directory for uploads
+	    $uploadDir = '/vagrant/sites/planner.dev/public/uploads/';
+
+	    // Grab the filename from the uploaded file by using basename
+	    $filename = basename($_FILES['file1']['name']);
+
+
+	    // Create the saved filename using the file's original name and our upload directory
+	    $savedFilename = $uploadDir . $filename;
+
+	    $newBook = new AddressDataStore($savedFilename);
+
+	    if(substr($filename, -3) == 'csv') {
+	    	move_uploaded_file($_FILES['file1']['tmp_name'], $savedFilename);
+	    	$addressBook = array_merge($addressBook, $newBook->readAddressBook());
+	    	$addressBook->writeAddressBook($addressBook);
+	    	
+	    }
+
+
+	    // Move the file from the temp location to our uploads directory
+
+
+		// $addressBook = $addressList->mergeBooks();	    
+
+	}
+
+	// Create instance = $addressList
+ 	// pass $filename to $addressList->csvFile
 
 	if($_POST) {
 		$addressBook[] = $_POST;
@@ -118,9 +175,21 @@ class AddressDataStore
 <br>
 
 
-	<? if (isset($message)): ?>
-		<p><?= $message ?></p>
-	<? endif ?>
+
+
+	<h2>Upload Contact List</h2>
+
+	<form method="POST" enctype="multipart/form-data" action="address_book.php">
+        <p>
+            <label for="file1">File to upload: </label>
+            <input type="file" id="file1" name="file1">
+        </p>
+        <p>
+            <input type="submit" value="Upload">
+        </p>
+    </form>
+
+    <br><br>
 
 	<form method="POST" action="/address_book.php">
 		<h3>Add an entry:</h3>
