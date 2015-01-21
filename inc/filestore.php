@@ -10,6 +10,9 @@ class Filestore
     {
         // Sets $this->filename
         $this->filename = $filename;
+                if (!file_exists($filename)) {
+            touch ($filename);
+        }
     }
 
     //

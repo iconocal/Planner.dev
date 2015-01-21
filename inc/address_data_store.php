@@ -2,18 +2,28 @@
 
 require_once 'filestore.php';
 
+
+
 class AddressDataStore extends Filestore
  {
+    public function __construct($filename)
+    {
+        $filename = strtolower($filename);
+        parent::__construct($filename);
+        // or you could do 
+        // parent::__construct(strtolower($filename));
+                
+    }
 
-     function readAddressBook()
-     {
-         return $this->readCSV();
-     }
+    function readAddressBook()
+    {
+        return $this->readCSV();
+    }
 
-     function writeAddressBook($addressesArray)
-     {
-         $this->writeCSV($addressesArray);
-     }
+    function writeAddressBook($addressesArray)
+    {
+        $this->writeCSV($addressesArray);
+    }
 
 
  }
