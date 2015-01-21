@@ -7,12 +7,12 @@ class AddressDataStore extends Filestore
 
      function readAddressBook()
      {
-         $this->readCSV();
+         return $this->readCSV();
      }
 
      function writeAddressBook($addressesArray)
      {
-         $this-writeCSV($addressesArray);
+         $this->writeCSV($addressesArray);
      }
 
 

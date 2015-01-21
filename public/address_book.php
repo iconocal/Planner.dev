@@ -1,52 +1,13 @@
 <?php
 
-// $filename = 'address_book.csv';
+require_once '../inc/address_data_store.php';
+
+	$addressList = new AddressDataStore('address_book.csv');
+
+ 	$addressBook = $addressList->readAddressBook(); 
 
 
-class AddressDataStore
- {
-    
-    // function __construct($input = 'address_book.csv')
-    
-
-  //   function readAddressBook()
-  //   {
-	 //    $handle = fopen($this->csvFile, 'r');
-
-		// $addressBook = [];
-
-		// while (!feof($handle)) {
-		// 	$row = fgetcsv($handle);
-
-		// 	if (!empty($row)) {
-		// 		$addressBook[] = $row;
-		// 	}
-		// }
-	
-		// fclose($handle);
-		// return $addressBook;
-  //   }
-
-  //   function writeAddressBook($array)
-  //   {
-  //   	$handle = fopen($this->csvFile, 'w');
-
-		// foreach ($array as $row) {
-		// 	fputcsv($handle, $row);
-		// }
-
-		// fclose($handle);
-  //   }
-
- }
-
-
- 	// new instance of AddressDataStore
- 	$addressList = new AddressDataStore();
- 	$addressBook = $addressList->readAddressBook(); // don't need this using Thomas' solution
-
-
-	// Verify there were uploaded files and no errors
+	// // Verify there were uploaded files and no errors
 	if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
 		// Set the destination directory for uploads
 	    $uploadDir = '/vagrant/sites/planner.dev/public/uploads/';
@@ -63,17 +24,13 @@ class AddressDataStore
 	    if(substr($filename, -3) == 'csv') {
 	    	move_uploaded_file($_FILES['file1']['tmp_name'], $savedFilename);
 	    	$addressBook = array_merge($addressBook, $newBook->readAddressBook());
-	    	$addressBook->writeAddressBook($addressBook);
+	    	$addressBook->$addressList->writeAddressBook($addressBook);
 	    	
 	    }
-
-
-	   
-
 	}
 
-	// Create instance = $addressList
- 	// pass $filename to $addressList->csvFile
+ 	
+
 
 	if($_POST) {
 		$addressBook[] = $_POST;
@@ -121,6 +78,7 @@ class AddressDataStore
 
 <!-- 		Start working with PHP to echo out the data from $addressBook -->
 	<?php
+
 
 	foreach ($addressBook as $key => $address) {
 		echo "<tr>";

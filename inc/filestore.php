@@ -39,7 +39,7 @@ class Filestore
      
     public function readCSV()
     {
-        $handle = fopen($this->csvFile, 'r');
+        $handle = fopen($this->filename, 'r');
         $addressBook = [];
 
         while (!feof($handle)) {
@@ -59,7 +59,7 @@ class Filestore
      
     public function writeCSV($array)
     {
-        $handle = fopen($this->csvFile, 'w');
+        $handle = fopen($this->filename, 'w');
 
         foreach ($array as $row) {
             fputcsv($handle, $row);
