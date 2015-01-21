@@ -42,7 +42,7 @@ class Filestore
 
     //
     // Returns array of lines in $this->filename
-    public function readLines()
+    private function readLines()
     {
         $handle = fopen($this->filename, 'r');
         $contents = trim(fread($handle, filesize($this->filename)));
@@ -53,7 +53,7 @@ class Filestore
 
     //
     // Writes each element in $array to a new line in $this->filename
-    public function writeLines($array)
+    private function writeLines($array)
     {
         $handle = fopen($this->filename, 'w');
         foreach ($array as $listItem) {
@@ -64,8 +64,8 @@ class Filestore
 
     
     // Reads contents of csv $this->filename, returns an array
-     
-    public function readCSV()
+    
+    private function readCSV()
     {
         $handle = fopen($this->filename, 'r');
         $addressBook = [];
@@ -85,7 +85,7 @@ class Filestore
     
     // // Writes contents of $array to csv $this->filename
      
-    public function writeCSV($array)
+    private function writeCSV($array)
     {
         $handle = fopen($this->filename, 'w');
 

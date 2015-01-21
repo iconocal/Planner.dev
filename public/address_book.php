@@ -4,7 +4,7 @@ require_once '../inc/address_data_store.php';
 
 	$addressList = new AddressDataStore('Address_Book.csv');
 
- 	$addressBook = $addressList->readAddressBook(); 
+ 	$addressBook = $addressList->read(); 
 
 
 	// // Verify there were uploaded files and no errors
@@ -24,7 +24,7 @@ require_once '../inc/address_data_store.php';
 	    if(substr($filename, -3) == 'csv') {
 	    	move_uploaded_file($_FILES['file1']['tmp_name'], $savedFilename);
 	    	$addressBook = array_merge($addressBook, $newBook->readAddressBook());
-	    	$addressBook->$addressList->writeAddressBook($addressBook);
+	    	$addressBook->$addressList->write($addressBook);
 	    	
 	    }
 	}
@@ -35,14 +35,14 @@ require_once '../inc/address_data_store.php';
 	if($_POST) {
 		$addressBook[] = $_POST;
 		// save_file($filename, $addressBook);
-		$addressList->writeAddressBook($addressBook);
+		$addressList->write($addressBook);
 	}
 
 	if(isset($_GET['remove'])) {
 		$remove = $_GET['remove'];
 		unset($addressBook[$remove]);
 		$addressBook = array_values($addressBook);
-		$addressList->writeAddressBook($addressBook);
+		$addressList->write($addressBook);
 	}
 
 	
@@ -92,15 +92,7 @@ require_once '../inc/address_data_store.php';
 	?>
 	</table>
 
-
-
-
-<br>
-<br>
-<br>
-
-
-
+	<br>
 
 	<h2>Upload Contact List</h2>
 
@@ -114,7 +106,7 @@ require_once '../inc/address_data_store.php';
         </p>
     </form>
 
-    <br><br>
+<br>
 
 	<form method="POST" action="/address_book.php">
 		<h3>Add an entry:</h3>
