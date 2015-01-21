@@ -4,7 +4,7 @@
 
 	$file = new Filestore('data/todo.txt'); 
 
-	$todo_array = $file->readLines();
+	$todo_array = $file->read();
 
 	// Verify there were uploaded files and no errors
 	if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
@@ -21,24 +21,24 @@
 	    // Move the file from the temp location to our uploads directory
 	    move_uploaded_file($_FILES['file1']['tmp_name'], $savedFilename);
 
-	    $upload_array = $file->readLines($savedFilename);
+	    $upload_array = $file->read($savedFilename);
 
 
 	    $todo_array = array_merge($todo_array, $upload_array);
-	    $file->writeLines($todo_array);
+	    $file->write($todo_array);
 
 	}
 
 
 	if(isset($_POST['todo'])) {
 		$todo_array[] = $_POST['todo'];
-		$file->writeLines($todo_array);	
+		$file->write($todo_array);	
 	}
 
 	if(isset($_GET['remove'])) {
 		$id = $_GET['remove'];
 		unset($todo_array[$id]);
-		$file->writeLines($todo_array);
+		$file->write($todo_array);
 	}
 
 	

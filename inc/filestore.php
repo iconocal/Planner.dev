@@ -5,13 +5,38 @@
 class Filestore
 {
     public $filename = '';
+    protected $isCSV = false;
+
 
     public function __construct($filename)
     {
-        // Sets $this->filename
         $this->filename = $filename;
-                if (!file_exists($filename)) {
+
+        if (!file_exists($filename)) {
             touch ($filename);
+        }
+
+        if (substr($filename, -3) == 'csv') {
+            $this->isCSV = true;
+        }
+
+    }
+
+    public function read()
+    {
+        if ($this->isCSV) {
+            return $this->readCSV();
+        } else {
+            return $this->readLines();
+        }
+    }
+
+    public function write($array)
+    {
+        if ($this->isCSV) {
+            return $this->writeCSV($array);
+        } else {
+            return $this->writeLines($array);
         }
     }
 
