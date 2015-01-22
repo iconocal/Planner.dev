@@ -18,25 +18,27 @@ require_once '../inc/address_data_store.php';
 
 	    // Create the saved filename using the file's original name and our upload directory
 	    $savedFilename = $uploadDir . $filename;
+	    // var_dump($savedFilename);
 
-	    $newBook = new AddressDataStore($savedFilename);
+	    move_uploaded_file($_FILES['file1']['tmp_name'], $savedFilename);
 
-	    if(substr($filename, -3) == 'csv') {
-	    	move_uploaded_file($_FILES['file1']['tmp_name'], $savedFilename);
-	    	$addressBook = array_merge($addressBook, $newBook->readAddressBook());
-	    	$addressBook->$addressList->write($addressBook);
-	    	
-	    }
+	 	$newBook = new AddressDataStore($savedFilename);
+	    $uploadBook = $newBook->read();
+	    $addressBook = array_merge($addressBook, $uploadBook);
+	    $addressList->write($addressBook);
+	    
 	}
 
- 	
-
-
-	if($_POST) {
+ 	if($_POST) {
+		foreach ($_POST as $value) {
+			if (strlen($value) > 125) {
+				throw new Exception('Entry too long');
+			}
+		}
 		$addressBook[] = $_POST;
-		// save_file($filename, $addressBook);
 		$addressList->write($addressBook);
 	}
+
 
 	if(isset($_GET['remove'])) {
 		$remove = $_GET['remove'];
@@ -142,4 +144,11 @@ require_once '../inc/address_data_store.php';
 
 </body>
 </html>
+
+
+
+
+
+
+
 

@@ -6,6 +6,8 @@
 
 	$todo_array = $file->read();
 
+	$boolcheck = false;
+
 	// Verify there were uploaded files and no errors
 	if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
 	    // Set the destination directory for uploads
@@ -21,19 +23,30 @@
 	    // Move the file from the temp location to our uploads directory
 	    move_uploaded_file($_FILES['file1']['tmp_name'], $savedFilename);
 
-	    $upload_array = $file->read($savedFilename);
+	    $newList = new Filestore($savedFilename);
 
+	    $upload_array = $newList->read();
 
 	    $todo_array = array_merge($todo_array, $upload_array);
 	    $file->write($todo_array);
 
 	}
 
+	
 
 	if(isset($_POST['todo'])) {
-		$todo_array[] = $_POST['todo'];
-		$file->write($todo_array);	
-	}
+		try {
+			if ((strlen($_POST['todo']) != 0) && (strlen($_POST['todo']) < 10) ) {
+				$todo_array[] = $_POST['todo'];
+				$file->write($todo_array);		
+			} else {
+				throw new Exception('Data invalid');
+			}
+			} catch (Exception $e) {
+				echo "I said DATA INVALID!";
+				}
+		}
+
 
 	if(isset($_GET['remove'])) {
 		$id = $_GET['remove'];
@@ -41,7 +54,7 @@
 		$file->write($todo_array);
 	}
 
-	
+
 
 ?>
 
