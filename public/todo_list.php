@@ -40,12 +40,14 @@
 				$todo_array[] = $_POST['todo'];
 				$file->write($todo_array);		
 			} else {
-				throw new Exception('Data invalid');
+				throw new InvalidInputException('Your Task is flawed!');
 			}
-			} catch (Exception $e) {
-				echo "I said DATA INVALID!";
-				}
+		} 
+
+		catch (InvalidInputException $e) {
+				echo $e->getMessage();
 		}
+	}
 
 
 	if(isset($_GET['remove'])) {

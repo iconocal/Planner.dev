@@ -29,15 +29,22 @@ require_once '../inc/address_data_store.php';
 	    
 	}
 
+
  	if($_POST) {
-		foreach ($_POST as $value) {
-			if (strlen($value) > 125) {
-				throw new Exception('Entry too long');
-			}
-		}
-		$addressBook[] = $_POST;
-		$addressList->write($addressBook);
-	}
+ 		try {
+ 			foreach ($_POST as $value) {
+ 				if (strlen($value) > 25) {
+ 					throw new InvalidInputException('Entry too long');
+ 				}
+ 			}
+ 			$addressBook[] = $_POST;
+ 			$addressList->write($addressBook);
+ 		}
+
+ 		catch (InvalidInputException $e) {
+ 			echo $e->getMessage();
+ 		}
+	}	
 
 
 	if(isset($_GET['remove'])) {
