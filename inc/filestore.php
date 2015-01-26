@@ -1,6 +1,6 @@
 <?php
 
-
+class InvalidInputException extends Exception {}
 
 class Filestore
 {
@@ -51,7 +51,6 @@ class Filestore
         return $todo_array;
     }
 
-    //
     // Writes each element in $array to a new line in $this->filename
     private function writeLines($array)
     {
@@ -83,8 +82,7 @@ class Filestore
     }
 
     
-    // // Writes contents of $array to csv $this->filename
-     
+    // Writes contents of $array to csv $this->filename
     private function writeCSV($array)
     {
         $handle = fopen($this->filename, 'w');

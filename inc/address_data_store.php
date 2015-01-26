@@ -2,8 +2,6 @@
 
 require_once 'filestore.php';
 
-
-
 class AddressDataStore extends Filestore
  {
     public function __construct($filename)
