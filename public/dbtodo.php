@@ -13,6 +13,7 @@ define("DB_PASS", "codeup");
 
 // Require the file that connects to the database.
 require '../db_connect.php';
+require '../inc/dbfilestore.php';
 
 // DECLARE FUNCTION getCount(): Gets number of rows in table
 function getCount($dbc) {
@@ -49,9 +50,28 @@ if($_GET['page'] < 1){
 // Determine Offset
 $startList = ($currentPage - 1) * $tasksPerPage;
 
+// Input into table from form input
+if($_POST) {
+
+    $stmt = $dbc->prepare('INSERT INTO task_list (task, priority) VALUES (:task, :priority)');
+
+    $stmt->bindValue(':task', $_POST['task'], PDO::PARAM_STR);
+    $stmt->bindValue(':priority', $_POST['priority'], PDO::PARAM_INT);
+    
+    $stmt->execute();
+}
+
+if(isset($_GET['remove'])) {
+    $stmt = $dbc->prepare("DELETE FROM task_list WHERE id= :id");
+    $stmt->bindValue(':id', $_GET['remove'], PDO::PARAM_INT);
+    $stmt->execute();
+
+    }
+
 
 // Prepare query to select all parks. 
-$stmt = $dbc->prepare('SELECT * FROM task_list 
+$stmt = $dbc->prepare('SELECT id, priority, task FROM task_list
+    ORDER BY priority ASC 
     LIMIT :lim
     OFFSET :offset
     ');
@@ -60,21 +80,10 @@ $stmt = $dbc->prepare('SELECT * FROM task_list
     $stmt->bindValue(':offset', $startList, PDO::PARAM_INT);
     $stmt->execute();
 
+
+// populate $tasks array with tasks from db
 $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-
-
-// Input into table from form input
-if($_POST) {
-
-    // print_r($_POST);
-    // var_dump($_POST);
-    $stmt = $dbc->prepare('INSERT INTO task_list (task) VALUES (:task)');
-
-        $stmt->bindValue(':task', $_POST['task'], PDO::PARAM_STR);
-    
-        $stmt->execute();
-}
 
 
 ?>
@@ -98,17 +107,18 @@ if($_POST) {
 <!--     Todo Task List Table -->
     <table class="table">
         <tr>
-            <th>#</th>
+            <th>#Priority</th>
             <th>Task</th>
+            <th>Remove</th>
         </tr>
 
 <!-- Loop to Display Task List -->
 <?php    
     foreach ($tasks as $key => $task) {
         echo "<tr>";
-            foreach ($task as $value) {
-                echo "<td>{$value}</td>";
-            }      
+        echo "<td>{$task['priority']}</td>";
+        echo "<td>{$task['task']}</td>";
+        echo "<td><a href=\"/dbtodo.php?remove={$task['id']}\">X</a></td>";     
     }
 ?>
 </table>
@@ -122,18 +132,41 @@ if($_POST) {
 }
 ?> 
 
-<!-- Form Add A Task -->
-<form class ="form-inline" method="POST" action="/dbtodo.php">
+<!-- Form Add Task -->
+    <form class ="form-inline" method="POST" action="/dbtodo.php">
         <h3>Add A Task:</h3>
         <div class="form-group">
             <label for="task">Task: </label>
             <input id="task" class="form-control" name="task" type="text" placeholder="Add Task">
+            <label for="priority">Priority: </label>
+            <select class="form-control" id="priority" name="priority">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option selected>5</option>
+            </select>
+
         </div>
+        
         <button type="submit" class="btn btn-default">Add</button>
+    </form>
+
+    <!-- Form Upload Task List -->
+    <form method="POST" enctype="multipart/form-data">
+        <h3>Upload Todo List:</h3>
+        <p>
+            <label for="file1"></label>
+            <input type="file" id="file1" name="file1">
+        </p>
+        <p>
+            <input type="submit" value="Upload">
+        </p>
     </form>
 
 </div>
 
+<!-- Previous/Next Buttons -->
 <nav>
   <ul class="pager">
     <li><a href="#">Previous</a></li>
