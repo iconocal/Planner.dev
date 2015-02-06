@@ -52,15 +52,13 @@ $startList = ($currentPage - 1) * $tasksPerPage;
 
 // Input into table from form input
 if($_POST) {
-
     $stmt = $dbc->prepare('INSERT INTO task_list (task, priority) VALUES (:task, :priority)');
-
     $stmt->bindValue(':task', $_POST['task'], PDO::PARAM_STR);
     $stmt->bindValue(':priority', $_POST['priority'], PDO::PARAM_INT);
-    
     $stmt->execute();
 }
 
+// Removes task from task list
 if(isset($_GET['remove'])) {
     $stmt = $dbc->prepare("DELETE FROM task_list WHERE id= :id");
     $stmt->bindValue(':id', $_GET['remove'], PDO::PARAM_INT);
@@ -105,9 +103,9 @@ $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <h1>Calvin's Todo List</h1>
 
 <!--     Todo Task List Table -->
-    <table class="table">
+    <table class="table table-condensed table-hover">
         <tr>
-            <th>#Priority</th>
+            <th>Priority</th>
             <th>Task</th>
             <th>Remove</th>
         </tr>
@@ -140,17 +138,18 @@ $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <input id="task" class="form-control" name="task" type="text" placeholder="Add Task">
             <label for="priority">Priority: </label>
             <select class="form-control" id="priority" name="priority">
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option selected>5</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option selected>5</option>
             </select>
-
         </div>
         
         <button type="submit" class="btn btn-default">Add</button>
     </form>
+
+    <br>
 
     <!-- Form Upload Task List -->
     <form method="POST" enctype="multipart/form-data">
